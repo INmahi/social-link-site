@@ -5,6 +5,8 @@ import { staticProfile, staticSocialLinks } from "@/staticData";
 export default function Home() {
   const [animationDelays, setAnimationDelays] = useState<{ [key: string]: string }>({});
   const [showScrollToTop, setShowScrollToTop] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [typewriterText, setTypewriterText] = useState("");
   const { toast } = useToast();
 
   // Use static data for deployment
@@ -31,6 +33,26 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const welcomeMessage = "Welcome to my universe ✨";
+    let currentIndex = 0;
+    
+    const typewriterInterval = setInterval(() => {
+      if (currentIndex <= welcomeMessage.length) {
+        setTypewriterText(welcomeMessage.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(typewriterInterval);
+        // Wait 1 second after typing completes, then hide loader
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000);
+      }
+    }, 100);
+
+    return () => clearInterval(typewriterInterval);
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -49,6 +71,9 @@ export default function Home() {
           className: "bg-slate-800 border-slate-700 text-white",
         });
       });
+    } else if (name === 'My Portfolio') {
+      // Do nothing for portfolio card - just show coming soon animation
+      return;
     } else {
       window.open(url, '_blank');
     }
@@ -62,6 +87,34 @@ export default function Home() {
 
   return (
     <div className="font-inter text-white min-h-screen overflow-x-hidden">
+      {/* Preloader */}
+      {isLoading && (
+        <div className="preloader fixed inset-0 z-50 flex items-center justify-center">
+          <div className="preloader-background"></div>
+          <div className="preloader-content">
+            <div className="preloader-avatar">
+              <img 
+                src={profile.profileImageUrl}
+                alt="Profile"
+                className="w-24 h-24 rounded-full object-cover preloader-image animate-float"
+              />
+              <div className="preloader-ring"></div>
+            </div>
+            <div className="mt-8 text-center">
+              <h1 className="text-2xl md:text-3xl font-bold mb-2 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                {profile.name}
+              </h1>
+              <div className="typewriter-container">
+                <span className="typewriter-text text-lg text-gray-300">
+                  {typewriterText}
+                </span>
+                <span className="typewriter-cursor">|</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Fixed Background with Dark Overlay */}
       <div 
         className="fixed inset-0 fixed-bg" 
@@ -207,52 +260,85 @@ export default function Home() {
             {socialLinks.map((link) => (
               <div 
                 key={link.id}
-                className="gradient-border card-hover animate-fadeInUp cursor-pointer"
+                className={`gradient-border card-hover animate-fadeInUp cursor-pointer ${
+                  link.isPortfolio ? 'portfolio-card' : ''
+                }`}
                 style={{ animationDelay: animationDelays[link.id] }}
                 onClick={() => handleLinkClick(link.url, link.name)}
               >
-                <div className="gradient-border-inner p-6">
-                  <div className="flex items-center justify-between card-content">
-                    <div className="flex items-center space-x-4">
-                      <div 
-                        className="w-12 h-12 rounded-xl flex items-center justify-center card-icon"
-                        style={{
-                          background: `linear-gradient(135deg, ${link.gradientFrom}, ${link.gradientTo})`
-                        }}
-                      >
-                        {link.name === 'X' ? (
-                          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                          </svg>
+                <div className={`gradient-border-inner ${link.isPortfolio ? 'p-8' : 'p-6'}`}>
+                  {link.isPortfolio ? (
+                    // Portfolio Card Content
+                    <div className="text-center">
+                      <div className="flex justify-center mb-4">
+                        <div 
+                          className="w-16 h-16 rounded-xl flex items-center justify-center card-icon"
+                          style={{
+                            background: `linear-gradient(135deg, ${link.gradientFrom}, ${link.gradientTo})`
+                          }}
+                        >
+                          <i className={`${link.icon} text-white text-2xl`}></i>
+                        </div>
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">{link.name}</h3>
+                      <p className="text-gray-400 text-sm mb-6">{link.description}</p>
+                      <div className="coming-soon-animation">
+                        <div className="flex items-center justify-center space-x-2">
+                          <div className="loading-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                          </div>
+                          <span className="text-lg font-medium bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                            Coming Soon
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    // Regular Card Content
+                    <div className="flex items-center justify-between card-content">
+                      <div className="flex items-center space-x-4">
+                        <div 
+                          className="w-12 h-12 rounded-xl flex items-center justify-center card-icon"
+                          style={{
+                            background: `linear-gradient(135deg, ${link.gradientFrom}, ${link.gradientTo})`
+                          }}
+                        >
+                          {link.name === 'X' ? (
+                            <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                          ) : (
+                            <i className={`${link.icon} text-white text-xl`}></i>
+                          )}
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold">{link.name}</h3>
+                          <p className="text-gray-400 text-sm">
+                            {link.name === 'Discord' ? (
+                              <span className="flex items-center gap-2">
+                                {link.description}
+                                <span className="text-indigo-300 font-mono">@{link.url}</span>
+                              </span>
+                            ) : (
+                              link.description
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-gray-400 card-arrow">
+                        {link.name === 'Discord' ? (
+                          <div className="flex items-center gap-2">
+                            <i className="fas fa-copy text-sm"></i>
+                            <span className="text-xs">Copy</span>
+                          </div>
                         ) : (
-                          <i className={`${link.icon} text-white text-xl`}></i>
+                          <i className="fas fa-external-link-alt"></i>
                         )}
                       </div>
-                      <div>
-                        <h3 className="text-lg font-semibold">{link.name}</h3>
-                        <p className="text-gray-400 text-sm">
-                          {link.name === 'Discord' ? (
-                            <span className="flex items-center gap-2">
-                              {link.description}
-                              <span className="text-indigo-300 font-mono">@{link.url}</span>
-                            </span>
-                          ) : (
-                            link.description
-                          )}
-                        </p>
-                      </div>
                     </div>
-                    <div className="text-gray-400 card-arrow">
-                      {link.name === 'Discord' ? (
-                        <div className="flex items-center gap-2">
-                          <i className="fas fa-copy text-sm"></i>
-                          <span className="text-xs">Copy</span>
-                        </div>
-                      ) : (
-                        <i className="fas fa-external-link-alt"></i>
-                      )}
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -263,6 +349,18 @@ export default function Home() {
             <div className="inline-flex items-center space-x-2 text-gray-400 text-sm">
               <i className="fas fa-heart text-red-400"></i>
               <span>Made with passion</span>
+            </div>
+            <div className="mt-3">
+              <a 
+                href="https://github.com/INmahi/social-link-site"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-2 text-indigo-400 hover:text-indigo-300 transition-colors duration-200 text-sm"
+              >
+                <i className="fab fa-react"></i>
+                {/* <span>See React Source Code</span> */}
+                <i className="fas fa-external-link-alt text-xs"></i>
+              </a>
             </div>
             <p className="text-gray-500 text-xs mt-2">© 2024 {profile.name}. All rights reserved.</p>
           </footer>

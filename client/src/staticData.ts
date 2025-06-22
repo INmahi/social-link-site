@@ -69,4 +69,15 @@ export const staticSocialLinks = [
     gradientTo: "#14171A",
     order: 6,
   },
+  {
+    id: 7,
+    name: "My Portfolio",
+    url: "#",
+    icon: "fas fa-briefcase",
+    description: "Personal projects & work showcase",
+    gradientFrom: "#6366F1",
+    gradientTo: "#8B5CF6",
+    order: 7,
+    isPortfolio: true,
+  },
 ];
