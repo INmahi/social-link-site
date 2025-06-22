@@ -319,7 +319,7 @@ export default function Home() {
                             {link.name === 'Discord' ? (
                               <span className="flex items-center gap-2">
                                 {link.description}
-                                <span className="text-indigo-300 font-mono">@{link.url}</span>
+                                {/* <span className="text-indigo-300 font-mono">@{link.url}</span> */}
                               </span>
                             ) : (
                               link.description
@@ -331,7 +331,7 @@ export default function Home() {
                         {link.name === 'Discord' ? (
                           <div className="flex items-center gap-2">
                             <i className="fas fa-copy text-sm"></i>
-                            <span className="text-xs">Copy</span>
+                            <span className="text-xs">Copy Username</span>
                           </div>
                         ) : (
                           <i className="fas fa-external-link-alt"></i>
