@@ -4,6 +4,7 @@ import { staticProfile, staticSocialLinks } from "@/staticData";
 
 export default function Home() {
   const [animationDelays, setAnimationDelays] = useState<{ [key: string]: string }>({});
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
   const { toast } = useToast();
 
   // Use static data for deployment
@@ -19,6 +20,23 @@ export default function Home() {
       setAnimationDelays(delays);
     }
   }, [socialLinks]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setShowScrollToTop(scrollPosition > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   const handleLinkClick = (url: string, name: string) => {
     if (name === 'Discord') {
@@ -61,48 +79,115 @@ export default function Home() {
       <div className="relative min-h-screen">
         {/* Header Section */}
         <header className="container mx-auto px-6 pt-8 pb-6">
-          <div className="flex items-start justify-between animate-fadeInUp">
-            {/* Profile Picture & Name - Top Left */}
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <img 
-                  src={profile.profileImageUrl}
-                  alt="Profile Picture" 
-                  className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover profile-glow animate-float"
-                />
-                {profile.isOnline && (
-                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-slate-900"></div>
-                )}
+          <div className="animate-fadeInUp">
+            {/* Desktop Layout */}
+            <div className="hidden md:flex items-start justify-between">
+              {/* Profile Picture & Name - Desktop Left */}
+              <div className="flex items-center space-x-4">
+                <div className="relative">
+                  <img 
+                    src={profile.profileImageUrl}
+                    alt="Profile Picture" 
+                    className="w-20 h-20 rounded-full object-cover profile-glow animate-float"
+                  />
+                  {profile.isOnline && (
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-slate-900"></div>
+                  )}
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                    {profile.name}
+                  </h1>
+                  <p className="text-gray-400 text-base font-medium">Creative Professional</p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                  {profile.name}
-                </h1>
-                <p className="text-gray-400 text-sm md:text-base font-medium">Creative Professional</p>
+
+              {/* Designation - Desktop Right */}
+              <div className="text-right">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 text-indigo-200">
+                  <i className="fas fa-star mr-1"></i>
+                  {profile.title}
+                </span>
+                
+                {/* Quick Action Buttons */}
+                <div className="flex items-center justify-end mt-3 space-x-2">
+                  <button 
+                    onClick={() => window.open('https://github.com/INmahi/', '_blank')}
+                    className="w-8 h-8 bg-slate-800/60 hover:bg-slate-700/80 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-slate-600/40 hover:border-slate-500/60"
+                  >
+                    <i className="fab fa-github text-slate-300 hover:text-white text-sm"></i>
+                  </button>
+                  <button 
+                    onClick={() => window.open('https://www.linkedin.com/in/mahi01/', '_blank')}
+                    className="w-8 h-8 bg-slate-800/60 hover:bg-slate-700/80 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-slate-600/40 hover:border-slate-500/60"
+                  >
+                    <i className="fab fa-linkedin-in text-slate-300 hover:text-blue-400 text-sm"></i>
+                  </button>
+                  <button 
+                    onClick={() => window.open('mailto:ishatnoormahi@gmail.com', '_self')}
+                    className="w-8 h-8 bg-slate-800/60 hover:bg-slate-700/80 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-slate-600/40 hover:border-slate-500/60"
+                  >
+                    <i className="fas fa-envelope text-slate-300 hover:text-red-400 text-sm"></i>
+                  </button>
+                </div>
               </div>
             </div>
 
-            {/* Designation - Top Right */}
-            <div className="text-right">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs md:text-sm font-medium bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 text-indigo-200">
-                <i className="fas fa-star mr-1"></i>
-                {profile.title}
-              </span>
-              
-              {/* Quick Action Buttons */}
-              <div className="flex items-center justify-end mt-3 space-x-2">
-                <button 
-                  onClick={() => window.open('https://github.com/INmahi/', '_blank')}
-                  className="w-8 h-8 bg-slate-800/60 hover:bg-slate-700/80 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-slate-600/40 hover:border-slate-500/60"
-                >
-                  <i className="fab fa-github text-slate-300 hover:text-white text-sm"></i>
-                </button>
-                <button 
-                  onClick={() => window.open('https://www.linkedin.com/in/mahi01/', '_blank')}
-                  className="w-8 h-8 bg-slate-800/60 hover:bg-slate-700/80 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-slate-600/40 hover:border-slate-500/60"
-                >
-                  <i className="fab fa-linkedin-in text-slate-300 hover:text-blue-400 text-sm"></i>
-                </button>
+            {/* Mobile Layout */}
+            <div className="md:hidden">
+              {/* Profile Picture - Mobile Top Center */}
+              <div className="flex justify-center mb-4">
+                <div className="relative">
+                  <img 
+                    src={profile.profileImageUrl}
+                    alt="Profile Picture" 
+                    className="w-16 h-16 rounded-full object-cover profile-glow animate-float"
+                  />
+                  {profile.isOnline && (
+                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-slate-900"></div>
+                  )}
+                </div>
+              </div>
+
+              {/* Name & Designation Row - Mobile */}
+              <div className="flex items-start justify-between">
+                {/* Left: Name & Creative Professional */}
+                <div className="flex-1">
+                  <h1 className="text-lg font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                    {profile.name}
+                  </h1>
+                  <p className="text-gray-400 text-sm font-medium">Creative Professional</p>
+                </div>
+
+                {/* Right: Designation & Quick Buttons */}
+                <div className="text-right">
+                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 text-indigo-200">
+                    <i className="fas fa-star mr-1"></i>
+                    {profile.title}
+                  </span>
+                  
+                  {/* Quick Action Buttons */}
+                  <div className="flex items-center justify-end mt-2 space-x-1">
+                    <button 
+                      onClick={() => window.open('https://github.com/INmahi/', '_blank')}
+                      className="w-7 h-7 bg-slate-800/60 hover:bg-slate-700/80 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-slate-600/40 hover:border-slate-500/60"
+                    >
+                      <i className="fab fa-github text-slate-300 hover:text-white text-xs"></i>
+                    </button>
+                    <button 
+                      onClick={() => window.open('https://www.linkedin.com/in/mahi01/', '_blank')}
+                      className="w-7 h-7 bg-slate-800/60 hover:bg-slate-700/80 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-slate-600/40 hover:border-slate-500/60"
+                    >
+                      <i className="fab fa-linkedin-in text-slate-300 hover:text-blue-400 text-xs"></i>
+                    </button>
+                    <button 
+                      onClick={() => window.open('mailto:ishatnoormahi@gmail.com', '_self')}
+                      className="w-7 h-7 bg-slate-800/60 hover:bg-slate-700/80 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-slate-600/40 hover:border-slate-500/60"
+                    >
+                      <i className="fas fa-envelope text-slate-300 hover:text-red-400 text-xs"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -183,6 +268,19 @@ export default function Home() {
           </footer>
         </main>
       </div>
+
+      {/* Scroll to Top Button */}
+      {showScrollToTop && (
+        <button
+          onClick={scrollToTop}
+          className="scroll-to-top-btn fixed bottom-6 left-6 z-50"
+          aria-label="Scroll to top"
+        >
+          <div className="scroll-btn-inner">
+            <i className="fas fa-chevron-up text-white text-lg"></i>
+          </div>
+        </button>
+      )}
     </div>
   );
 }

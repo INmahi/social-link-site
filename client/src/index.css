@@ -117,7 +117,7 @@
     height: 100%;
     position: relative;
     z-index: 1;
-    transition: background 0.6s ease-out;
+    transition: background 0.3s ease-in-out;
     overflow: hidden;
   }
   
@@ -131,23 +131,23 @@
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.08), rgba(236, 72, 153, 0.06), rgba(16, 185, 129, 0.05));
     background-size: 300% 300%;
     opacity: 0;
-    transition: opacity 0.6s ease-out, background-size 0.6s ease-out;
+    transition: opacity 0.3s ease-in-out, background-size 0.3s ease-in-out;
     border-radius: calc(1rem - 2px);
     animation: subtleShift 4s ease-in-out infinite;
   }
   
   .card-hover:hover .gradient-border-inner::before {
-    opacity: 0.7;
-    background-size: 400% 400%;
-    animation: hoverShift 2s ease-in-out infinite;
+    opacity: 0.4;
+    background-size: 350% 350%;
+    animation: hoverShift 3s ease-in-out infinite;
   }
   
   .card-hover:hover .gradient-border-inner {
-    background: linear-gradient(135deg, #1a2332, #2d3748, #374151);
+    background: #1a2540;
   }
   
   .card-hover {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease-in-out;
     position: relative;
     overflow: hidden;
   }
@@ -180,6 +180,68 @@
   .card-arrow {
     transition: all 0.3s ease;
     opacity: 0.6;
+  }
+
+  /* Scroll to Top Button */
+  .scroll-to-top-btn {
+    transition: all 0.3s ease-in-out;
+    transform: translateY(0);
+    animation: slideInFromLeft 0.4s ease-out;
+  }
+
+  .scroll-to-top-btn:hover {
+    transform: translateY(-3px);
+  }
+
+  .scroll-btn-inner {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .scroll-btn-inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899, #10b981);
+    background-size: 300% 300%;
+    border-radius: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    animation: gradientShift 3s ease infinite;
+    z-index: -1;
+  }
+
+  .scroll-to-top-btn:hover .scroll-btn-inner::before {
+    opacity: 1;
+  }
+
+  .scroll-to-top-btn:hover .scroll-btn-inner {
+    background: #0f172a;
+    border-color: rgba(59, 130, 246, 0.3);
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.2);
+  }
+
+  .scroll-btn-inner i {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.2s ease;
+  }
+
+  .scroll-to-top-btn:hover .scroll-btn-inner i {
+    transform: translateY(-2px);
   }
 }
 
@@ -243,6 +305,17 @@
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
