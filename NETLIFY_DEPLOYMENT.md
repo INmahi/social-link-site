@@ -56,34 +56,3 @@
    netlify deploy --prod --dir=dist
    ```
 
-## Your Site Features
-
-✅ **Responsive Design** - Works on all devices
-✅ **Fast Loading** - Optimized static files
-✅ **Custom Domain** - Can add your own domain
-✅ **HTTPS** - Automatic SSL certificate
-✅ **Global CDN** - Fast worldwide access
-
-## Custom Domain (Optional)
-
-1. Go to your Netlify dashboard
-2. Click on your site
-3. Go to "Domain settings"
-4. Click "Add custom domain"
-5. Follow the DNS configuration steps
-
-## Automatic Updates
-
-If you used Method 1 (GitHub), your site will automatically update when you push changes to your repository!
-
-## Your Live Site Will Include:
-
-- Dark-themed portfolio with fixed background
-- Animated social media cards with hover effects
-- Discord username copy functionality
-- Quick action buttons for GitHub and LinkedIn
-- Custom cursor design
-- Mobile-responsive layout
-- Fast loading times
-
-Your social media link aggregator is now ready for the world! 🚀

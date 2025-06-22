@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { staticProfile, staticSocialLinks } from "@/staticData";
+import { siteConfig } from "@/config";
 
 export default function Home() {
   const [animationDelays, setAnimationDelays] = useState<{ [key: string]: string }>({});
@@ -34,7 +35,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const welcomeMessage = "Welcome to my universe ✨";
+    const welcomeMessage = siteConfig.welcomeMessage;
     let currentIndex = 0;
     
     const typewriterInterval = setInterval(() => {
@@ -251,7 +252,7 @@ export default function Home() {
           {/* Welcome Section */}
           <div className="text-center mb-12 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
             <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent">
-              ✨ Let's Stay Connected ✨
+              {siteConfig.mainHeading}
             </h2>
           </div>
 
@@ -261,14 +262,14 @@ export default function Home() {
               <div 
                 key={link.id}
                 className={`gradient-border card-hover animate-fadeInUp cursor-pointer ${
-                  link.isPortfolio ? 'portfolio-card' : ''
+                  link.comingSoon ? 'portfolio-card' : ''
                 }`}
                 style={{ animationDelay: animationDelays[link.id] }}
                 onClick={() => handleLinkClick(link.url, link.name)}
               >
-                <div className={`gradient-border-inner ${link.isPortfolio ? 'p-8' : 'p-6'}`}>
-                  {link.isPortfolio ? (
-                    // Portfolio Card Content
+                <div className={`gradient-border-inner ${link.comingSoon ? 'p-8' : 'p-6'}`}>
+                  {link.comingSoon ? (
+                    // Coming Soon Card Content
                     <div className="text-center">
                       <div className="flex justify-center mb-4">
                         <div 
@@ -348,11 +349,11 @@ export default function Home() {
           <footer className="text-center mt-16 animate-fadeInUp" style={{ animationDelay: '0.9s' }}>
             <div className="inline-flex items-center space-x-2 text-gray-400 text-sm">
               <i className="fas fa-heart text-red-400"></i>
-              <span>Made with passion</span>
+              <span>{siteConfig.footerText}</span>
             </div>
             <div className="mt-3">
               <a 
-                href="https://github.com/INmahi/social-link-site"
+                href={siteConfig.githubRepo}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center space-x-2 text-indigo-400 hover:text-indigo-300 transition-colors duration-200 text-sm"
@@ -362,7 +363,7 @@ export default function Home() {
                 <i className="fas fa-external-link-alt text-xs"></i>
               </a>
             </div>
-            <p className="text-gray-500 text-xs mt-2">© 2024 {profile.name}. All rights reserved.</p>
+            <p className="text-gray-500 text-xs mt-2">© {siteConfig.copyrightYear} {profile.name}. All rights reserved.</p>
           </footer>
         </main>
       </div>

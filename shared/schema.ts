@@ -17,6 +17,7 @@ export const socialLinks = pgTable("social_links", {
   gradientFrom: text("gradient_from").notNull(),
   gradientTo: text("gradient_to").notNull(),
   order: integer("order").notNull().default(0),
+  comingSoon: boolean("coming_soon").notNull().default(false),
 });
 
 export const profile = pgTable("profile", {
@@ -41,6 +42,7 @@ export const insertSocialLinkSchema = createInsertSchema(socialLinks).pick({
   gradientFrom: true,
   gradientTo: true,
   order: true,
+  comingSoon: true,
 });
 
 export const insertProfileSchema = createInsertSchema(profile).pick({
