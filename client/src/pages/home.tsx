@@ -1,0 +1,188 @@
+import { useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { staticProfile, staticSocialLinks } from "@/staticData";
+
+export default function Home() {
+  const [animationDelays, setAnimationDelays] = useState<{ [key: string]: string }>({});
+  const { toast } = useToast();
+
+  // Use static data for deployment
+  const profile = staticProfile;
+  const socialLinks = staticSocialLinks;
+
+  useEffect(() => {
+    if (socialLinks) {
+      const delays: { [key: string]: string } = {};
+      socialLinks.forEach((link, index) => {
+        delays[link.id] = `${0.3 + index * 0.1}s`;
+      });
+      setAnimationDelays(delays);
+    }
+  }, [socialLinks]);
+
+  const handleLinkClick = (url: string, name: string) => {
+    if (name === 'Discord') {
+      // Copy Discord username to clipboard
+      navigator.clipboard.writeText(url).then(() => {
+        toast({
+          title: "Copied to clipboard!",
+          description: `Discord username "${url}" has been copied.`,
+          duration: 1500,
+          className: "bg-slate-800 border-slate-700 text-white",
+        });
+      });
+    } else {
+      window.open(url, '_blank');
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
+
+  // No loading state needed for static data
+
+  return (
+    <div className="font-inter text-white min-h-screen overflow-x-hidden">
+      {/* Fixed Background with Dark Overlay */}
+      <div 
+        className="fixed inset-0 fixed-bg" 
+        style={{
+          backgroundImage: "url('https://images.unsplash.com/photo-1614728263952-84ea256f9679?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&h=1080')",
+          zIndex: -2
+        }}
+      />
+      <div 
+        className="fixed inset-0 bg-gradient-to-br from-slate-900/90 via-slate-800/85 to-slate-900/95" 
+        style={{ zIndex: -1 }}
+      />
+
+      {/* Main Container */}
+      <div className="relative min-h-screen">
+        {/* Header Section */}
+        <header className="container mx-auto px-6 pt-8 pb-6">
+          <div className="flex items-start justify-between animate-fadeInUp">
+            {/* Profile Picture & Name - Top Left */}
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <img 
+                  src={profile.profileImageUrl}
+                  alt="Profile Picture" 
+                  className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover profile-glow animate-float"
+                />
+                {profile.isOnline && (
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-slate-900"></div>
+                )}
+              </div>
+              <div>
+                <h1 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                  {profile.name}
+                </h1>
+                <p className="text-gray-400 text-sm md:text-base font-medium">Creative Professional</p>
+              </div>
+            </div>
+
+            {/* Designation - Top Right */}
+            <div className="text-right">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs md:text-sm font-medium bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 text-indigo-200">
+                <i className="fas fa-star mr-1"></i>
+                {profile.title}
+              </span>
+              
+              {/* Quick Action Buttons */}
+              <div className="flex items-center justify-end mt-3 space-x-2">
+                <button 
+                  onClick={() => window.open('https://github.com/INmahi/', '_blank')}
+                  className="w-8 h-8 bg-slate-800/60 hover:bg-slate-700/80 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-slate-600/40 hover:border-slate-500/60"
+                >
+                  <i className="fab fa-github text-slate-300 hover:text-white text-sm"></i>
+                </button>
+                <button 
+                  onClick={() => window.open('https://www.linkedin.com/in/mahi01/', '_blank')}
+                  className="w-8 h-8 bg-slate-800/60 hover:bg-slate-700/80 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-slate-600/40 hover:border-slate-500/60"
+                >
+                  <i className="fab fa-linkedin-in text-slate-300 hover:text-blue-400 text-sm"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="container mx-auto px-6 pb-12">
+          {/* Welcome Section */}
+          <div className="text-center mb-12 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent">
+              ✨ Let's Stay Connected ✨
+            </h2>
+          </div>
+
+          {/* Social Media Cards Grid */}
+          <div className="max-w-2xl mx-auto space-y-4">
+            {socialLinks.map((link) => (
+              <div 
+                key={link.id}
+                className="gradient-border card-hover animate-fadeInUp cursor-pointer"
+                style={{ animationDelay: animationDelays[link.id] }}
+                onClick={() => handleLinkClick(link.url, link.name)}
+              >
+                <div className="gradient-border-inner p-6">
+                  <div className="flex items-center justify-between card-content">
+                    <div className="flex items-center space-x-4">
+                      <div 
+                        className="w-12 h-12 rounded-xl flex items-center justify-center card-icon"
+                        style={{
+                          background: `linear-gradient(135deg, ${link.gradientFrom}, ${link.gradientTo})`
+                        }}
+                      >
+                        {link.name === 'X' ? (
+                          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                          </svg>
+                        ) : (
+                          <i className={`${link.icon} text-white text-xl`}></i>
+                        )}
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold">{link.name}</h3>
+                        <p className="text-gray-400 text-sm">
+                          {link.name === 'Discord' ? (
+                            <span className="flex items-center gap-2">
+                              {link.description}
+                              <span className="text-indigo-300 font-mono">@{link.url}</span>
+                            </span>
+                          ) : (
+                            link.description
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-gray-400 card-arrow">
+                      {link.name === 'Discord' ? (
+                        <div className="flex items-center gap-2">
+                          <i className="fas fa-copy text-sm"></i>
+                          <span className="text-xs">Copy</span>
+                        </div>
+                      ) : (
+                        <i className="fas fa-external-link-alt"></i>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Footer Section */}
+          <footer className="text-center mt-16 animate-fadeInUp" style={{ animationDelay: '0.9s' }}>
+            <div className="inline-flex items-center space-x-2 text-gray-400 text-sm">
+              <i className="fas fa-heart text-red-400"></i>
+              <span>Made with passion</span>
+            </div>
+            <p className="text-gray-500 text-xs mt-2">© 2024 {profile.name}. All rights reserved.</p>
+          </footer>
+        </main>
+      </div>
+    </div>
+  );
+}

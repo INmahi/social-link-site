@@ -1,0 +1,259 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(60, 4.8%, 95.9%);
+  --accent-foreground: hsl(24, 9.8%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --radius: 0.5rem;
+  
+  /* Custom dark theme colors */
+  --dark-primary: hsl(240, 34%, 10%);
+  --dark-secondary: hsl(240, 22%, 16%);
+  --card-dark: hsl(217, 45%, 16%);
+  --indigo-custom: hsl(238, 83%, 67%);
+  --purple-custom: hsl(262, 83%, 67%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="%23374151" fill-opacity="0.4" stroke="%236366f1" stroke-width="2"/><circle cx="16" cy="16" r="4" fill="%236366f1" fill-opacity="0.8"/></svg>'), auto;
+  }
+
+  body {
+    @apply font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  a, button, .cursor-pointer {
+    cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="%235865f2" fill-opacity="0.3" stroke="%23ffffff" stroke-width="2"/><circle cx="16" cy="16" r="4" fill="%23ffffff" fill-opacity="0.9"/></svg>'), pointer;
+  }
+}
+
+@layer utilities {
+  .fixed-bg {
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  .profile-glow {
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.3), 0 0 20px rgba(99, 102, 241, 0.4);
+  }
+  
+  .gradient-border {
+    background: linear-gradient(135deg, #6366F1, #8B5CF6, #EC4899);
+    padding: 2px;
+    border-radius: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+  
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #10B981, #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981);
+    background-size: 400% 400%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    border-radius: 1rem;
+    animation: gradientShift 3s ease infinite;
+  }
+  
+  .gradient-border:hover::before {
+    opacity: 1;
+  }
+  
+  .gradient-border-inner {
+    background: #16213E;
+    border-radius: calc(1rem - 2px);
+    height: 100%;
+    position: relative;
+    z-index: 1;
+    transition: background 0.6s ease-out;
+    overflow: hidden;
+  }
+  
+  .gradient-border-inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.08), rgba(236, 72, 153, 0.06), rgba(16, 185, 129, 0.05));
+    background-size: 300% 300%;
+    opacity: 0;
+    transition: opacity 0.6s ease-out, background-size 0.6s ease-out;
+    border-radius: calc(1rem - 2px);
+    animation: subtleShift 4s ease-in-out infinite;
+  }
+  
+  .card-hover:hover .gradient-border-inner::before {
+    opacity: 0.7;
+    background-size: 400% 400%;
+    animation: hoverShift 2s ease-in-out infinite;
+  }
+  
+  .card-hover:hover .gradient-border-inner {
+    background: linear-gradient(135deg, #1a2332, #2d3748, #374151);
+  }
+  
+  .card-hover {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-8px) scale(1.02);
+  }
+  
+  .card-hover:hover .card-content {
+    transform: translateX(8px);
+  }
+  
+  .card-hover:hover .card-icon {
+    transform: scale(1.1) rotate(5deg);
+  }
+  
+  .card-hover:hover .card-arrow {
+    transform: translateX(8px);
+    opacity: 1;
+  }
+  
+  .card-content {
+    transition: transform 0.3s ease;
+  }
+  
+  .card-icon {
+    transition: transform 0.3s ease;
+  }
+  
+  .card-arrow {
+    transition: all 0.3s ease;
+    opacity: 0.6;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+  to { box-shadow: 0 0 30px rgba(99, 102, 241, 0.6), 0 0 40px rgba(139, 92, 246, 0.3); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes subtleShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes hoverShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 100% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
