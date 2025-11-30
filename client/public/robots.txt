@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /private/
 Allow: /
 
-Sitemap: https://inmlink.netlify.app/public/sitemap.xml
+Sitemap: https://inmlink.netlify.app/sitemap.xml
