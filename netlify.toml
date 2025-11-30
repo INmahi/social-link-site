@@ -6,6 +6,6 @@
   NODE_VERSION = "20"
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/sitemap.xml"
+  to = "/sitemap.xml"
   status = 200
