@@ -152,7 +152,7 @@ export default function Home() {
                   <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
                     {profile.name}
                   </h1>
-                  <p className="text-gray-400 text-base font-medium">Creative Professional</p>
+                  <p className="text-gray-400 text-base font-medium">Machine Learning & Robotics Enthusiast</p>
                 </div>
               </div>
 
