@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /private/
+Allow: /
+
+Sitemap: https://inmlink.netlify.app/public/sitemap.xml
